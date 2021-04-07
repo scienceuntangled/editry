@@ -20,6 +20,8 @@ Imports:
     sys
 Suggests:
     archive,
+    av,
+    gifski,
     remotes,
     testthat
 Remotes: scienceuntangled/noder, jimhester/archive
