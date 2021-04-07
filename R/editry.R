@@ -27,7 +27,9 @@ er_layer <- function(type, ...) {
 #' @export
 er_clip <- function(duration, layers) {
     if (inherits(layers, "er_layer")) layers <- list(layers)
-    out <- list(duration = duration, layers = layers)
+    out <- list()
+    if (!missing(duration) && !is.null(duration)) out$duration <- duration
+    out$layers <- layers
     class(out) <- c("er_clip", class(out))
     out
 }

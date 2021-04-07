@@ -38,7 +38,7 @@ er_install_ffmpeg <- function(force = FALSE, check_hash = TRUE) {
     if (!requireNamespace("archive", quietly = TRUE)) {
         msg <- "the 'archive' package is required: install it with\n"
         if (!requireNamespace("remotes", quietly = TRUE)) msg <- paste0(msg, "  install.packages(\"remotes\")\n")
-        stop(paste0(msg, "  remotes", "::", "install_github(\"jimhester/archive\")")) ## silly paste0 here to avoid check warnings
+        stop(paste0(msg, "  remotes::install_github(\"jimhester/archive\")"))
     }
     if (!dir.exists(path)) dir.create(path, recursive = TRUE)
     if (!dir.exists(path)) stop("could not create directory ", path, " for ffmpeg")
