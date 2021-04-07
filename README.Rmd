@@ -89,4 +89,9 @@ And compile this into a video. We use the `fast` option here to generate a low-q
 er_exec_wait(json = my_json, fast = TRUE)
 ```
 
-<video src="`r outfile`" controls autoplay loop />
+```{r echo = FALSE, results = "hide"}
+if (!dir.exists("man/figures")) dir.create("man/figures")
+file.copy(outfile, "man/figures/example1.mp4", overwrite = TRUE)
+```
+
+<video src="man/figures/example1.mp4" controls autoplay loop />

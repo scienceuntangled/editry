@@ -96,8 +96,8 @@ er_exec_wait(json = my_json, fast = TRUE)
 #> No more transitionFromClip, done
 #> 
 #> Done. Output file can be found at:
-#> /tmp/RtmpYkVLzn/filea3694ad446a0.mp4
+#> /tmp/RtmpYkVLzn/filea3693e03335e.mp4
 #> [1] 0
 ```
 
-<video src="/tmp/RtmpYkVLzn/filea3694ad446a0.mp4" controls autoplay loop />
+<video src="man/figures/example1.mp4" controls autoplay loop />
