@@ -1,0 +1,26 @@
+Package: editry
+Title: R Bindings to the editly NodeJS Package
+Version: 0.0.1
+Authors@R: c(person(given = "Ben", family = "Raymond", role = c("aut", "cre"), email = "ben@untan.gl"),
+             person(given = "Adrien", family = "Ickowicz", role = "aut"))
+Description: R bindings to the editly NodeJS, for declarative video editing <https://github.com/mifi/editly/>.
+URL: https://github.com/scienceuntangled/editry
+BugReports: https://github.com/scienceuntangled/editry/issues
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+Imports:
+    assertthat,
+    digest,
+    fs,
+    jsonlite,
+    noder,
+    rappdirs,
+    sys
+Suggests:
+    archive,
+    remotes,
+    testthat
+Remotes: scienceuntangled/noder, jimhester/archive
+RoxygenNote: 7.1.1

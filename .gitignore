@@ -1,0 +1,6 @@
+.Rproj.user
+*~
+.Rhistory
+README.html
+inst/node/node_modules
+inst/node/package-lock.json

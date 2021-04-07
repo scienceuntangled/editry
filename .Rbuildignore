@@ -1,0 +1,6 @@
+^editry\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^README\.html$
+docs/
+inst/node/node_modules/
