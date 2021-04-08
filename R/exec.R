@@ -18,6 +18,7 @@ er_exec_wait <- function(json, fast = FALSE, ...) {
     assert_that(is.flag(fast), !is.na(fast))
     er_add_ffmpeg_path() ## needed, because editly needs to find ffprobe and ffmpeg
     cli <- er_editly_exe()
+    if (is.null(cli)) stop("could not find the editly executable: have you installed it with `er_install_editly()` ?")
     if (!missing(json) && !is.null(json)) {
         assert_that(is.string(json))
         if (!file.exists(json)) {
