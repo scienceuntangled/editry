@@ -63,11 +63,9 @@ one or more layers. Let’s start with two simple clips:
 
 ``` r
 clips <- list(
-    er_clip(duration = 3, layers = er_layer("title", text = "Title slide")),
-    er_clip(duration = 3, layers = er_layer("image",
-                                            path = system.file("extdata/images/Rlogo.png", package = "editry"),
-                                            resizeMode = "contain", zoomDirection = "out"))
-)
+    er_clip_title(duration = 3, text = "Title slide"),
+    er_clip_image(duration = 3, path = system.file("extdata/images/Rlogo.png", package = "editry"),
+                  resize_mode = "contain", zoom_direction = "out"))
 ```
 
 The header:
@@ -96,8 +94,7 @@ er_exec_wait(json = my_json, fast = TRUE)
 #> No more transitionFromClip, done
 #> 
 #> Done. Output file can be found at:
-#> /tmp/RtmpYkVLzn/filea36976d21df.mp4
-#> [1] 0
+#> /tmp/RtmpYkVLzn/filea36965d16b4c.mp4
 ```
 
 <img src="man/figures/example1.gif" />

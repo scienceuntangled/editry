@@ -4,12 +4,14 @@
 \alias{er_spec}
 \title{Create the json string ready for compiling to video by editly}
 \usage{
-er_spec(header, clips)
+er_spec(header, clips, audio_tracks)
 }
 \arguments{
 \item{header}{er_header: as returned by \code{\link[=er_header]{er_header()}}}
 
 \item{clips}{list: a list of \code{er_clip} objects as returned by \code{\link[=er_clip]{er_clip()}}}
+
+\item{audio_tracks}{list: a list of \code{er_audio_track} objects, as returned by \code{\link[=er_audio_track]{er_audio_track()}}}
 }
 \value{
 A json string

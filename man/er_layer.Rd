@@ -13,14 +13,28 @@ er_clip(duration, layers)
 
 er_defaults(transition, layer, layer_type)
 
-er_header(fps = 30, out_path, defaults)
+er_header(
+  out_path = tempfile(fileext = ".mp4"),
+  fps,
+  width,
+  height,
+  audio_file_path,
+  loop_audio,
+  keep_source_audio,
+  clips_audio_volume,
+  output_volume,
+  audio_norm.enable,
+  audio_norm.gauss_size,
+  audio_norm.max_gain,
+  defaults
+)
 }
 \arguments{
-\item{type}{string: the layer type (e.g. "title" or "image")}
+\item{type}{string: the layer type (e.g. "title", "image", "video")}
 
 \item{...}{: other parameters}
 
-\item{duration}{numeric: clip duration in seconds}
+\item{duration}{numeric: duration in seconds}
 
 \item{layers}{list: a list of \code{er_layer} objects}
 
@@ -30,9 +44,29 @@ er_header(fps = 30, out_path, defaults)
 
 \item{layer_type}{list: default layerType spec}
 
-\item{fps}{numeric: frames per second}
-
 \item{out_path}{string: the path of the video file to create}
+
+\item{fps}{numeric: frames per second (default = 25 or FPS of first video)}
+
+\item{width}{integer: video width (default = 640)}
+
+\item{height}{integer: auto based on width and aspect ratio of first video}
+
+\item{audio_file_path}{string: set an audio track for the whole video}
+
+\item{loop_audio}{logical: loop the audio track if it is shorter than video? (default = \code{FALSE})}
+
+\item{keep_source_audio}{logical: keep source audio from clips? (default = \code{FALSE})}
+
+\item{clips_audio_volume}{numeric: volume of audio from clips relative to \code{\link[=er_audio_track]{er_audio_track()}}s (default = 1)}
+
+\item{output_volume}{numeric or string: adjust output volume (final stage). e.g. 0.5 or "10dB" (default = 1)}
+
+\item{audio_norm.enable}{logical: enable audio normalization? (default = \code{FALSE})}
+
+\item{audio_norm.gauss_size}{numeric: audio normalization gauss size (default = 5)}
+
+\item{audio_norm.max_gain}{numeric: audio normalization max gain (default = 30)}
 
 \item{defaults}{er_defaults: as returned by \code{\link[=er_defaults]{er_defaults()}}}
 }

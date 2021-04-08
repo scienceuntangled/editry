@@ -62,11 +62,9 @@ Typically a spec consists of a sequence of clips, along with some header paramet
 
 ```{r}
 clips <- list(
-    er_clip(duration = 3, layers = er_layer("title", text = "Title slide")),
-    er_clip(duration = 3, layers = er_layer("image",
-                                            path = system.file("extdata/images/Rlogo.png", package = "editry"),
-                                            resizeMode = "contain", zoomDirection = "out"))
-)
+    er_clip_title(duration = 3, text = "Title slide"),
+    er_clip_image(duration = 3, path = system.file("extdata/images/Rlogo.png", package = "editry"),
+                  resize_mode = "contain", zoom_direction = "out"))
 
 ```
 
