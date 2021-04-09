@@ -353,6 +353,14 @@ er_clip_title <- function(duration, ...) {
 
 #' @rdname er_clip_pause
 #' @export
+er_clip_title_background <- function(duration, ...) {
+    rgs <- list(...)
+    lyrs <- do.call(er_layer_title_background, rgs[names(rgs) %in% c("text", "font_path", "text_color", "background")])
+    er_clip(duration = duration, transition = rgs[["transition"]], layers = lyrs)
+}
+
+#' @rdname er_clip_pause
+#' @export
 er_clip_image <- function(duration, ...) {
     rgs <- list(...)
     lyrs <- do.call(er_layer_image, rgs[names(rgs) %in% c("path", "resize_mode", "zoom_direction", "zoom_amount")])

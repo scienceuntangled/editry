@@ -4,6 +4,7 @@
 \alias{er_clip_pause}
 \alias{er_clip_pausetitle}
 \alias{er_clip_title}
+\alias{er_clip_title_background}
 \alias{er_clip_image}
 \title{Convenience functions for clips}
 \usage{
@@ -12,6 +13,8 @@ er_clip_pause(duration, ...)
 er_clip_pausetitle(duration, ...)
 
 er_clip_title(duration, ...)
+
+er_clip_title_background(duration, ...)
 
 er_clip_image(duration, ...)
 }
