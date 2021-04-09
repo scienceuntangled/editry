@@ -64,7 +64,7 @@ one or more layers. Let’s start with two simple clips:
 ``` r
 clips <- list(
     er_clip_title(duration = 3, text = "Title slide", transition = er_transition(name = "windowslice")),
-    er_clip_image(duration = 3, path = system.file("extdata/images/Rlogo.png", package = "editry"),
+    er_clip_image(duration = 3, path = "https://jeroen.github.io/images/Rlogo.png",
                   resize_mode = "contain", zoom_direction = "out"))
 ```
 
@@ -72,7 +72,8 @@ The header:
 
 ``` r
 outfile <- tempfile(fileext = ".mp4")
-hdr <- er_header(out_path = outfile)
+hdr <- er_header(out_path = outfile, allow_remote_requests = TRUE)
+## allow_remote_requests allows us to use a remote URL for image source, above
 ```
 
 Now we can build the actual spec (which is a json string):
@@ -94,7 +95,7 @@ er_exec_wait(json = my_json, fast = TRUE)
 #> No more transitionFromClip, done
 #> 
 #> Done. Output file can be found at:
-#> /tmp/RtmpYkVLzn/filea3693ecc55a2.mp4
+#> /tmp/RtmpLPs1G7/file212134b60c727.mp4
 ```
 
 <img src="man/figures/example1.gif" />
