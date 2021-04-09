@@ -62,7 +62,7 @@ Typically a spec consists of a sequence of clips, along with some header paramet
 
 ```{r}
 clips <- list(
-    er_clip_title(duration = 3, text = "Title slide"),
+    er_clip_title(duration = 3, text = "Title slide", transition = er_transition(name = "windowslice")),
     er_clip_image(duration = 3, path = system.file("extdata/images/Rlogo.png", package = "editry"),
                   resize_mode = "contain", zoom_direction = "out"))
 
@@ -73,18 +73,21 @@ The header:
 ```{r}
 outfile <- tempfile(fileext = ".mp4")
 hdr <- er_header(out_path = outfile)
+
 ```
 
 Now we can build the actual spec (which is a json string):
 
 ```{r}
 my_json <- er_spec(header = hdr, clips = clips)
+
 ```
 
 And compile this into a video. We use the `fast` option here to generate a low-quality preview:
 
-```{r}
+```{r, eval = !file.exists("man/figures/example1.gif")}
 er_exec_wait(json = my_json, fast = TRUE)
+
 ```
 
 ```{r echo = FALSE, results = "hide"}
@@ -93,6 +96,7 @@ if (!file.exists("man/figures/example1.gif")) {
     fls <- av::av_video_images(outfile, format = "png")
     gifski::gifski(fls, gif_file = "man/figures/example1.gif", width = 320, height = 240, delay = 1/30)
 }
+
 ```
 
 <img src="man/figures/example1.gif" />

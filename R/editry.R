@@ -1,5 +1,5 @@
 cadd <- function(addto, thing) {
-    if (!missing(thing) && !is.null(thing)) {
+    if (!missing(thing) && length(thing) > 0) {
         nm <- as.character(substitute(thing))
         ## underscore_names to camelCase
         nm <- R.utils::toCamelCase(nm, split = "_")
@@ -19,7 +19,7 @@ nnull <- function(z) Filter(Negate(is.null), z)
 #' @param type string: the layer type (e.g. "title", "image", "video")
 #' @param duration numeric: duration in seconds
 #' @param layers list: a list of `er_layer` objects
-#' @param transition list: default transition spec
+#' @param transition list: an [er_transition()] object
 #' @param layer list: default layer spec
 #' @param layer_type list: default layerType spec
 #' @param fps numeric: frames per second (default = 25 or FPS of first video)
@@ -34,6 +34,7 @@ nnull <- function(z) Filter(Negate(is.null), z)
 #' @param audio_norm.enable logical: enable audio normalization? (default = `FALSE`)
 #' @param audio_norm.gauss_size numeric: audio normalization gauss size (default = 5)
 #' @param audio_norm.max_gain numeric: audio normalization max gain (default = 30)
+#' @param custom_output_args character: vector of custom output codec/format arguments for ffmpeg
 #' @param defaults er_defaults: as returned by [er_defaults()]
 #' @param ... : other parameters
 #'
@@ -52,9 +53,10 @@ er_layer <- function(type, ...) {
 
 #' @rdname er_layer
 #' @export
-er_clip <- function(duration, layers) {
+er_clip <- function(duration, transition, layers) {
     if (inherits(layers, "er_layer")) layers <- list(layers)
     out <- list()
+    out <- cadd(out, transition)
     out <- cadd(out, duration)
     out$layers <- layers
     structure(out, class = c("er_clip", "list"))
@@ -72,12 +74,11 @@ er_defaults <- function(transition, layer, layer_type) {
 
 #' @rdname er_layer
 #' @export
-er_header <- function(out_path = tempfile(fileext = ".mp4"), fps, width, height, audio_file_path, loop_audio, keep_source_audio, clips_audio_volume, output_volume, audio_norm.enable, audio_norm.gauss_size, audio_norm.max_gain, defaults) {
+er_header <- function(out_path = tempfile(fileext = ".mp4"), fps, width, height, audio_file_path, loop_audio, keep_source_audio, clips_audio_volume, output_volume, audio_norm.enable, audio_norm.gauss_size, audio_norm.max_gain, defaults, custom_output_args) {
     out <- list(outPath = out_path)
     out <- cadd(out, fps)
     out <- cadd(out, width)
     out <- cadd(out, height)
-    out <- cadd(out, defaults)
     out <- cadd(out, audio_file_path)
     out <- cadd(out, loop_audio)
     out <- cadd(out, keep_source_audio)
@@ -86,6 +87,8 @@ er_header <- function(out_path = tempfile(fileext = ".mp4"), fps, width, height,
     out <- cadd(out, audio_norm.enable)
     out <- cadd(out, audio_norm.gauss_size)
     out <- cadd(out, audio_norm.max_gain)
+    out <- cadd(out, custom_output_args)
+    out <- cadd(out, defaults)
     structure(out, class = c("er_header", "list"))
 }
 
@@ -327,7 +330,7 @@ er_audio_track <- function(path, cut_from, cut_to, start, mix_volume) {
 #' @export
 er_clip_pause <- function(duration, ...) {
     rgs <- list(...)
-    er_clip(duration = duration, layers = do.call(er_layer_pause, rgs[names(rgs) %in% "color"]))
+    er_clip(duration = duration, transition = rgs[["transition"]], layers = do.call(er_layer_pause, rgs[names(rgs) %in% "color"]))
 }
 
 
@@ -337,7 +340,7 @@ er_clip_pausetitle <- function(duration, ...) {
     rgs <- list(...)
     lyrs <- list(do.call(er_layer_pause, rgs[names(rgs) %in% "color"]),
                  do.call(er_layer_title, rgs[names(rgs) %in% c("text", "font_path", "text_color", "position", "zoom_direction", "zoom_amount")]))
-    er_clip(duration = duration, layers = lyrs)
+    er_clip(duration = duration, transition = rgs[["transition"]], layers = lyrs)
 }
 
 #' @rdname er_clip_pause
@@ -345,7 +348,7 @@ er_clip_pausetitle <- function(duration, ...) {
 er_clip_title <- function(duration, ...) {
     rgs <- list(...)
     lyrs <- do.call(er_layer_title, rgs[names(rgs) %in% c("text", "font_path", "text_color", "position", "zoom_direction", "zoom_amount")])
-    er_clip(duration = duration, layers = lyrs)
+    er_clip(duration = duration, transition = rgs[["transition"]], layers = lyrs)
 }
 
 #' @rdname er_clip_pause
@@ -353,14 +356,36 @@ er_clip_title <- function(duration, ...) {
 er_clip_image <- function(duration, ...) {
     rgs <- list(...)
     lyrs <- do.call(er_layer_image, rgs[names(rgs) %in% c("path", "resize_mode", "zoom_direction", "zoom_amount")])
-    er_clip(duration = duration, layers = lyrs)
+    er_clip(duration = duration, transition = rgs[["transition"]], layers = lyrs)
+}
+
+
+#' Clip transitions
+#'
+#' @references <https://github.com/mifi/editly/>
+#' @param name string: can be any of the transitions listed in <https://gl-transitions.com/gallery>, or "directional-left", "directional-right", "directional-up", "directional-down", "random", " dummy"
+#' @param duration numeric: duration in seconds
+#' @param audio_out_curve string: fade out curve in audio cross fades (default = "tri")
+#' @param audio_in_curve string: fade in curve in audio cross fades (default = "tri")
+#'
+#' @return A list with class `er_transition`
+#'
+#' @seealso [er_clip()]
+#'
+#' @export
+er_transition <- function(name, duration, audio_out_curve, audio_in_curve) {
+    out <- list(name = name)
+    out <- cadd(out, duration)
+    out <- cadd(out, audio_out_curve)
+    out <- cadd(out, audio_in_curve)
+    structure(out, class = c("er_transition", "list"))
 }
 
 
 #' Create the json string ready for compiling to video by editly
 #'
 #' @references <https://github.com/mifi/editly/>
-#' @param header er_header: as returned by [er_header()]
+#' @param header er_header: as returned by [er_header()], or a list containing the header, clips, and (optionally) audio tracks, equivalent to `list(header, clips = list(clips), audioTracks = list(audio_tracks))`
 #' @param clips list: a list of `er_clip` objects as returned by [er_clip()]
 #' @param audio_tracks list: a list of `er_audio_track` objects, as returned by [er_audio_track()]
 #'
@@ -370,7 +395,11 @@ er_clip_image <- function(duration, ...) {
 #'
 #' @export
 er_spec <- function(header, clips, audio_tracks) {
-    json <- c(header, clips = list(clips))
-    if (!missing(audio_tracks) && !is.null(audio_tracks)) json$audioTracks <- list(audio_tracks)
+    if (is.list(header) && "clips" %in% names(header)) {
+        json <- header
+    } else {
+        json <- c(header, clips = list(clips))
+        if (!missing(audio_tracks) && !is.null(audio_tracks)) json$audioTracks <- list(audio_tracks)
+    }
     toJSON(json, auto_unbox = TRUE)
 }

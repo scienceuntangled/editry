@@ -9,7 +9,7 @@
 \usage{
 er_layer(type, ...)
 
-er_clip(duration, layers)
+er_clip(duration, transition, layers)
 
 er_defaults(transition, layer, layer_type)
 
@@ -26,7 +26,8 @@ er_header(
   audio_norm.enable,
   audio_norm.gauss_size,
   audio_norm.max_gain,
-  defaults
+  defaults,
+  custom_output_args
 )
 }
 \arguments{
@@ -36,9 +37,9 @@ er_header(
 
 \item{duration}{numeric: duration in seconds}
 
-\item{layers}{list: a list of \code{er_layer} objects}
+\item{transition}{list: an \code{\link[=er_transition]{er_transition()}} object}
 
-\item{transition}{list: default transition spec}
+\item{layers}{list: a list of \code{er_layer} objects}
 
 \item{layer}{list: default layer spec}
 
@@ -69,6 +70,8 @@ er_header(
 \item{audio_norm.max_gain}{numeric: audio normalization max gain (default = 30)}
 
 \item{defaults}{er_defaults: as returned by \code{\link[=er_defaults]{er_defaults()}}}
+
+\item{custom_output_args}{character: vector of custom output codec/format arguments for ffmpeg}
 }
 \value{
 A list with class \code{er_clip}, \code{er_layer}, etc

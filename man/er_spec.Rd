@@ -7,7 +7,7 @@
 er_spec(header, clips, audio_tracks)
 }
 \arguments{
-\item{header}{er_header: as returned by \code{\link[=er_header]{er_header()}}}
+\item{header}{er_header: as returned by \code{\link[=er_header]{er_header()}}, or a list containing the header, clips, and (optionally) audio tracks, equivalent to \code{list(header, clips = list(clips), audioTracks = list(audio_tracks))}}
 
 \item{clips}{list: a list of \code{er_clip} objects as returned by \code{\link[=er_clip]{er_clip()}}}
 
