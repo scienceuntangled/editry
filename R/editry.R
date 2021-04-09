@@ -189,7 +189,8 @@ er_layer_title <- function(text, font_path, text_color, position, zoom_direction
 er_layer_subtitle <- function(text, font_path, text_color) {
     do.call(er_layer, nnull(list(type = "subtitle",
                                  text = if (!missing(text)) text,
-                                 font_path = if (!missing(font_path)) font_path)))
+                                 font_path = if (!missing(font_path)) font_path,
+                                 text_color = if (!missing(text_color)) text_color)))
 }
 
 #' @rdname er_layer_pause
@@ -317,7 +318,15 @@ er_audio_track <- function(path, cut_from, cut_to, start, mix_volume) {
     structure(out, class = c("er_audio_track", "list"))
 }
 
+## er_layer_* functions to automatically create er_clip_* wrappers for
+er_cliplist <- c("er_layer_pause", "er_layer_title", "er_layer_title_background", "er_layer_image", "er_layer_image_overlay",
+"er_layer_subtitle", "er_layer_news_title", "er_layer_slide_in_text", "er_layer_fill_color", "er_layer_radial_gradient", "er_layer_linear_gradient", "er_layer_rainbow_colors", "er_layer_video", "er_layer_audio")
+
 #' Convenience functions for clips
+#'
+#' Each of the `er_clip_*` functions is a wrapper around the corresponding `er_layer_*` function, creating an `er_clip` object with the structure `er_clip(duration, transition, layer)`, where:
+#' * `transition` is optional and only added if it appears in the `...` parameters
+#' * `layer` is created via the `er_layer_*` function, passing the appropriate parameters from `...`
 #'
 #' @references <https://github.com/mifi/editly/>
 #' @param duration numeric: duration in seconds
@@ -326,12 +335,25 @@ er_audio_track <- function(path, cut_from, cut_to, start, mix_volume) {
 #' @return A list of class `er_clip`
 #'
 #' @seealso [er_clip()]
+#' @eval paste0("@usage ", paste0(sub("_layer_", "_clip_", er_cliplist), "(duration, ...)\n", collapse = "\n"))
 #'
-#' @export
-er_clip_pause <- function(duration, ...) {
-    rgs <- list(...)
-    er_clip(duration = duration, transition = rgs[["transition"]], layers = do.call(er_layer_pause, rgs[names(rgs) %in% "color"]))
+# @export
+#' @evalRd paste("\\keyword{internal}", paste0('\\alias{', gsub('_layer_', '_clip_', er_cliplist), '}'), collapse = '\n')
+#' @name er_clip_pause
+#' @rdname er_clip_pause
+#' @exportPattern ^er_clip_
+er_clip_constructor <- function(layer_fname, layer_vars) {
+    eval(str2expression(paste0("function(duration, ...) {
+        rgs <- list(...)
+        lyrs <- do.call(", layer_fname, ", rgs[names(rgs) %in% c(\"", paste(layer_vars, collapse = "\", \""), "\")])
+        er_clip(duration = duration, transition = rgs[[\"transition\"]], layers = lyrs) }")))
 }
+
+for (layerf in er_cliplist) {
+    lf_args <- formalArgs(get(layerf, mode = "function"))
+    assign(sub("_layer_", "_clip_", layerf), er_clip_constructor(layerf, lf_args))
+}
+rm(er_clip_constructor)
 
 
 #' @rdname er_clip_pause
@@ -343,32 +365,9 @@ er_clip_pausetitle <- function(duration, ...) {
     er_clip(duration = duration, transition = rgs[["transition"]], layers = lyrs)
 }
 
-#' @rdname er_clip_pause
-#' @export
-er_clip_title <- function(duration, ...) {
-    rgs <- list(...)
-    lyrs <- do.call(er_layer_title, rgs[names(rgs) %in% c("text", "font_path", "text_color", "position", "zoom_direction", "zoom_amount")])
-    er_clip(duration = duration, transition = rgs[["transition"]], layers = lyrs)
-}
-
-#' @rdname er_clip_pause
-#' @export
-er_clip_title_background <- function(duration, ...) {
-    rgs <- list(...)
-    lyrs <- do.call(er_layer_title_background, rgs[names(rgs) %in% c("text", "font_path", "text_color", "background")])
-    er_clip(duration = duration, transition = rgs[["transition"]], layers = lyrs)
-}
-
-#' @rdname er_clip_pause
-#' @export
-er_clip_image <- function(duration, ...) {
-    rgs <- list(...)
-    lyrs <- do.call(er_layer_image, rgs[names(rgs) %in% c("path", "resize_mode", "zoom_direction", "zoom_amount")])
-    er_clip(duration = duration, transition = rgs[["transition"]], layers = lyrs)
-}
-
-
 #' Clip transitions
+#'
+#' A clip transitions is the *outgoing* transition from the clip.
 #'
 #' @references <https://github.com/mifi/editly/>
 #' @param name string: can be any of the transitions listed in <https://gl-transitions.com/gallery>, or "directional-left", "directional-right", "directional-up", "directional-down", "random", " dummy"

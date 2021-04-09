@@ -19,7 +19,7 @@ er_transition(name, duration, audio_out_curve, audio_in_curve)
 A list with class \code{er_transition}
 }
 \description{
-Clip transitions
+A clip transitions is the \emph{outgoing} transition from the clip.
 }
 \references{
 \url{https://github.com/mifi/editly/}

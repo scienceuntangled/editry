@@ -3,20 +3,37 @@
 \name{er_clip_pause}
 \alias{er_clip_pause}
 \alias{er_clip_pausetitle}
-\alias{er_clip_title}
-\alias{er_clip_title_background}
-\alias{er_clip_image}
 \title{Convenience functions for clips}
 \usage{
 er_clip_pause(duration, ...)
-
-er_clip_pausetitle(duration, ...)
 
 er_clip_title(duration, ...)
 
 er_clip_title_background(duration, ...)
 
 er_clip_image(duration, ...)
+
+er_clip_image_overlay(duration, ...)
+
+er_clip_subtitle(duration, ...)
+
+er_clip_news_title(duration, ...)
+
+er_clip_slide_in_text(duration, ...)
+
+er_clip_fill_color(duration, ...)
+
+er_clip_radial_gradient(duration, ...)
+
+er_clip_linear_gradient(duration, ...)
+
+er_clip_rainbow_colors(duration, ...)
+
+er_clip_video(duration, ...)
+
+er_clip_audio(duration, ...)
+
+er_clip_pausetitle(duration, ...)
 }
 \arguments{
 \item{duration}{numeric: duration in seconds}
@@ -27,7 +44,11 @@ er_clip_image(duration, ...)
 A list of class \code{er_clip}
 }
 \description{
-Convenience functions for clips
+Each of the \verb{er_clip_*} functions is a wrapper around the corresponding \verb{er_layer_*} function, creating an \code{er_clip} object with the structure \code{er_clip(duration, transition, layer)}, where:
+\itemize{
+\item \code{transition} is optional and only added if it appears in the \code{...} parameters
+\item \code{layer} is created via the \verb{er_layer_*} function, passing the appropriate parameters from \code{...}
+}
 }
 \references{
 \url{https://github.com/mifi/editly/}
@@ -35,3 +56,17 @@ Convenience functions for clips
 \seealso{
 \code{\link[=er_clip]{er_clip()}}
 }
+\keyword{internal} \alias{er_clip_pause}
+\keyword{internal} \alias{er_clip_title}
+\keyword{internal} \alias{er_clip_title_background}
+\keyword{internal} \alias{er_clip_image}
+\keyword{internal} \alias{er_clip_image_overlay}
+\keyword{internal} \alias{er_clip_subtitle}
+\keyword{internal} \alias{er_clip_news_title}
+\keyword{internal} \alias{er_clip_slide_in_text}
+\keyword{internal} \alias{er_clip_fill_color}
+\keyword{internal} \alias{er_clip_radial_gradient}
+\keyword{internal} \alias{er_clip_linear_gradient}
+\keyword{internal} \alias{er_clip_rainbow_colors}
+\keyword{internal} \alias{er_clip_video}
+\keyword{internal} \alias{er_clip_audio}
