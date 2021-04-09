@@ -25,6 +25,7 @@ nnull <- function(z) Filter(Negate(is.null), z)
 #' @param fps numeric: frames per second (default = 25 or FPS of first video)
 #' @param width integer: video width (default = 640)
 #' @param height integer: auto based on width and aspect ratio of first video
+#' @param allow_remote_requests logical: allow remote URLs as paths? (default = `FALSE`)
 #' @param out_path string: the path of the video file to create
 #' @param audio_file_path string: set an audio track for the whole video
 #' @param loop_audio logical: loop the audio track if it is shorter than video? (default = `FALSE`)
@@ -74,11 +75,12 @@ er_defaults <- function(transition, layer, layer_type) {
 
 #' @rdname er_layer
 #' @export
-er_header <- function(out_path = tempfile(fileext = ".mp4"), fps, width, height, audio_file_path, loop_audio, keep_source_audio, clips_audio_volume, output_volume, audio_norm.enable, audio_norm.gauss_size, audio_norm.max_gain, defaults, custom_output_args) {
+er_header <- function(out_path = tempfile(fileext = ".mp4"), fps, width, height, allow_remote_requests, audio_file_path, loop_audio, keep_source_audio, clips_audio_volume, output_volume, audio_norm.enable, audio_norm.gauss_size, audio_norm.max_gain, defaults, custom_output_args) {
     out <- list(outPath = out_path)
     out <- cadd(out, fps)
     out <- cadd(out, width)
     out <- cadd(out, height)
+    out <- cadd(out, allow_remote_requests)
     out <- cadd(out, audio_file_path)
     out <- cadd(out, loop_audio)
     out <- cadd(out, keep_source_audio)

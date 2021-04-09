@@ -18,6 +18,7 @@ er_header(
   fps,
   width,
   height,
+  allow_remote_requests,
   audio_file_path,
   loop_audio,
   keep_source_audio,
@@ -52,6 +53,8 @@ er_header(
 \item{width}{integer: video width (default = 640)}
 
 \item{height}{integer: auto based on width and aspect ratio of first video}
+
+\item{allow_remote_requests}{logical: allow remote URLs as paths? (default = \code{FALSE})}
 
 \item{audio_file_path}{string: set an audio track for the whole video}
 
