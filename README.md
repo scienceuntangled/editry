@@ -63,7 +63,7 @@ one or more layers. Let’s start with two simple clips:
 
 ``` r
 clips <- list(
-    er_clip_title(duration = 3, text = "Title slide", transition = er_transition(name = "windowslice")),
+    er_clip_title2(duration = 3, text = "Title slide", color = "black", transition = er_transition(name = "windowslice")),
     er_clip_image(duration = 3, path = "https://jeroen.github.io/images/Rlogo.png",
                   resize_mode = "contain", zoom_direction = "out"))
 ```
