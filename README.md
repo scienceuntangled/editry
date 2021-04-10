@@ -87,15 +87,6 @@ a low-quality preview:
 
 ``` r
 er_exec_wait(json = my_json, fast = TRUE)
-#> ffmpeg version 4.2.4
-#> ffprobe version 4.2.4
-#> 250x250 15fps
-#>   0%  12%  24%  36%  48% Done with transition, switching to next transitionFromClip (1)
-#>  60%  72%  84%  96% Done with transition, switching to next transitionFromClip (2)
-#> No more transitionFromClip, done
-#> 
-#> Done. Output file can be found at:
-#> /tmp/RtmpLPs1G7/file212134b60c727.mp4
 ```
 
 <img src="man/figures/example1.gif" />

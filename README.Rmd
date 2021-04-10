@@ -70,7 +70,7 @@ clips <- list(
 
 The header:
 
-```{r}
+```{r, eval = FALSE}
 outfile <- tempfile(fileext = ".mp4")
 hdr <- er_header(out_path = outfile, allow_remote_requests = TRUE)
 ## allow_remote_requests allows us to use a remote URL for image source, above
@@ -78,24 +78,25 @@ hdr <- er_header(out_path = outfile, allow_remote_requests = TRUE)
 
 Now we can build the actual spec (which is a json string):
 
-```{r}
+```{r, eval = FALSE}
 my_json <- er_spec(header = hdr, clips = clips)
 
 ```
 
 And compile this into a video. We use the `fast` option here to generate a low-quality preview:
 
-```{r, eval = !file.exists("man/figures/example1.gif")}
+```{r, eval = FALSE}
 er_exec_wait(json = my_json, fast = TRUE)
 
 ```
 
-```{r echo = FALSE, results = "hide"}
-if (!file.exists("man/figures/example1.gif")) {
-    if (!dir.exists("man/figures")) dir.create("man/figures")
-    fls <- av::av_video_images(outfile, format = "png")
-    gifski::gifski(fls, gif_file = "man/figures/example1.gif", width = 320, height = 240, delay = 1/30)
-}
+```{r echo = FALSE, results = "hide", eval = !file.exists("man/figures/example1.gif")}
+if (!dir.exists("man/figures")) dir.create("man/figures")
+## can do direct to gif
+outfile <- "man/figures/example1.gif"
+hdr <- er_header(out_path = outfile, allow_remote_requests = TRUE)
+my_json <- er_spec(header = hdr, clips = clips)
+er_exec_wait(json = my_json, fast = TRUE)
 
 ```
 
