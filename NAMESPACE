@@ -3,7 +3,7 @@
 export(er_add_ffmpeg_path)
 export(er_audio_track)
 export(er_clip)
-export(er_clip_pausetitle)
+export(er_clip_title2)
 export(er_defaults)
 export(er_exec_wait)
 export(er_ffmpeg_exe)

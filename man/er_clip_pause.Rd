@@ -2,7 +2,7 @@
 % Please edit documentation in R/editry.R
 \name{er_clip_pause}
 \alias{er_clip_pause}
-\alias{er_clip_pausetitle}
+\alias{er_clip_title2}
 \title{Convenience functions for clips}
 \usage{
 er_clip_pause(duration, ...)
@@ -33,7 +33,7 @@ er_clip_video(duration, ...)
 
 er_clip_audio(duration, ...)
 
-er_clip_pausetitle(duration, ...)
+er_clip_title2(duration, ...)
 }
 \arguments{
 \item{duration}{numeric: duration in seconds}
@@ -49,6 +49,9 @@ Each of the \verb{er_clip_*} functions is a wrapper around the corresponding \ve
 \item \code{transition} is optional and only added if it appears in the \code{...} parameters
 \item \code{layer} is created via the \verb{er_layer_*} function, passing the appropriate parameters from \code{...}
 }
+}
+\details{
+\code{er_clip_title2} is the same as \code{er_clip_title} but automatically inserts an \code{er_layer_fill_color} layer underneath the title, to fix font rendering issues (see \url{https://github.com/mifi/editly/issues/84})
 }
 \references{
 \url{https://github.com/mifi/editly/}

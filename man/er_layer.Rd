@@ -28,7 +28,12 @@ er_header(
   audio_norm.gauss_size,
   audio_norm.max_gain,
   defaults,
-  custom_output_args
+  custom_output_args,
+  logo_path,
+  logo_width,
+  logo_height,
+  logo_x,
+  logo_y
 )
 }
 \arguments{
@@ -46,7 +51,7 @@ er_header(
 
 \item{layer_type}{list: default layerType spec}
 
-\item{out_path}{string: the path of the video file to create}
+\item{out_path}{string: the path of the video file to create (the file extension can be a video file extension or ".gif")}
 
 \item{fps}{numeric: frames per second (default = 25 or FPS of first video)}
 
@@ -75,6 +80,16 @@ er_header(
 \item{defaults}{er_defaults: as returned by \code{\link[=er_defaults]{er_defaults()}}}
 
 \item{custom_output_args}{character: vector of custom output codec/format arguments for ffmpeg}
+
+\item{logo_path}{string: path to logo file. This must be a local file, even if \code{allow_remote_requests} is \code{TRUE}. \code{logo_path} will be ignored if \code{out_path} is a gif}
+
+\item{logo_width}{numeric: width of logo relative to screen width (0 to 1, default = 0.2). If only one of logo height or width is specified, the logo aspect ratio will be retained}
+
+\item{logo_height}{numeric: height of logo relative to screen width (0 to 1, default = 0.1). If only one of logo height or width is specified, the logo aspect ratio will be retained}
+
+\item{logo_x}{numeric: logo left-hand-edge position relative to left of screen (0 = left to 1 = right, default = 0.78). The logo is referenced relative to its left-hand edge, so the default of 0.78 and width 0.2 puts the right-hand edge at 0.98}
+
+\item{logo_y}{numeric: logo bottom-edge position relative to top of screen (0 = top to 1 = bottom, default = 0.98)}
 }
 \value{
 A list with class \code{er_clip}, \code{er_layer}, etc

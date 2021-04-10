@@ -1,9 +1,14 @@
+## turn path into path_real, but not for URLs
+cpr <- function(z) if (!grepl("^https?:", z, ignore.case = TRUE)) fs::path_real(z) else z
+
+## conditionally add thing to addto
 cadd <- function(addto, thing) {
     if (!missing(thing) && length(thing) > 0) {
         nm <- as.character(substitute(thing))
+        is_path <- is.string(thing) && (nm == "path" || grepl("_path", nm))
         ## underscore_names to camelCase
         nm <- R.utils::toCamelCase(nm, split = "_")
-        addto[[nm]] <- thing
+        addto[[nm]] <- if (is_path) cpr(thing) else thing
     }
     addto
 }
@@ -26,7 +31,7 @@ nnull <- function(z) Filter(Negate(is.null), z)
 #' @param width integer: video width (default = 640)
 #' @param height integer: auto based on width and aspect ratio of first video
 #' @param allow_remote_requests logical: allow remote URLs as paths? (default = `FALSE`)
-#' @param out_path string: the path of the video file to create
+#' @param out_path string: the path of the video file to create (the file extension can be a video file extension or ".gif")
 #' @param audio_file_path string: set an audio track for the whole video
 #' @param loop_audio logical: loop the audio track if it is shorter than video? (default = `FALSE`)
 #' @param keep_source_audio logical: keep source audio from clips? (default = `FALSE`)
@@ -36,6 +41,11 @@ nnull <- function(z) Filter(Negate(is.null), z)
 #' @param audio_norm.gauss_size numeric: audio normalization gauss size (default = 5)
 #' @param audio_norm.max_gain numeric: audio normalization max gain (default = 30)
 #' @param custom_output_args character: vector of custom output codec/format arguments for ffmpeg
+#' @param logo_path string: path to logo file. This must be a local file, even if `allow_remote_requests` is `TRUE`. `logo_path` will be ignored if `out_path` is a gif
+#' @param logo_width numeric: width of logo relative to screen width (0 to 1, default = 0.2). If only one of logo height or width is specified, the logo aspect ratio will be retained
+#' @param logo_height numeric: height of logo relative to screen width (0 to 1, default = 0.1). If only one of logo height or width is specified, the logo aspect ratio will be retained
+#' @param logo_x numeric: logo left-hand-edge position relative to left of screen (0 = left to 1 = right, default = 0.78). The logo is referenced relative to its left-hand edge, so the default of 0.78 and width 0.2 puts the right-hand edge at 0.98
+#' @param logo_y numeric: logo bottom-edge position relative to top of screen (0 = top to 1 = bottom, default = 0.98)
 #' @param defaults er_defaults: as returned by [er_defaults()]
 #' @param ... : other parameters
 #'
@@ -75,7 +85,7 @@ er_defaults <- function(transition, layer, layer_type) {
 
 #' @rdname er_layer
 #' @export
-er_header <- function(out_path = tempfile(fileext = ".mp4"), fps, width, height, allow_remote_requests, audio_file_path, loop_audio, keep_source_audio, clips_audio_volume, output_volume, audio_norm.enable, audio_norm.gauss_size, audio_norm.max_gain, defaults, custom_output_args) {
+er_header <- function(out_path = tempfile(fileext = ".mp4"), fps, width, height, allow_remote_requests, audio_file_path, loop_audio, keep_source_audio, clips_audio_volume, output_volume, audio_norm.enable, audio_norm.gauss_size, audio_norm.max_gain, defaults, custom_output_args, logo_path, logo_width, logo_height, logo_x, logo_y) {
     out <- list(outPath = out_path)
     out <- cadd(out, fps)
     out <- cadd(out, width)
@@ -91,6 +101,11 @@ er_header <- function(out_path = tempfile(fileext = ".mp4"), fps, width, height,
     out <- cadd(out, audio_norm.max_gain)
     out <- cadd(out, custom_output_args)
     out <- cadd(out, defaults)
+    out <- cadd(out, logo_path)
+    out <- cadd(out, logo_width)
+    out <- cadd(out, logo_height)
+    out <- cadd(out, logo_x)
+    out <- cadd(out, logo_y)
     structure(out, class = c("er_header", "list"))
 }
 
@@ -156,7 +171,7 @@ er_layer_pause <- function(color) {
 #' @export
 er_layer_image <- function(path, resize_mode, zoom_direction, zoom_amount) {
     do.call(er_layer, nnull(list(type = "image",
-                                 path = if (!missing(path)) path,
+                                 path = if (!missing(path)) cpr(path),
                                  resize_mode = if (!missing(resize_mode)) resize_mode,
                                  zoom_direction = if (!missing(zoom_direction)) zoom_direction,
                                  zoom_amount = if (!missing(zoom_amount)) zoom_amount)))
@@ -166,7 +181,7 @@ er_layer_image <- function(path, resize_mode, zoom_direction, zoom_amount) {
 #' @export
 er_layer_image_overlay <- function(path, position, width, height, zoom_direction, zoom_amount) {
     do.call(er_layer, nnull(list(type = "image-overlay",
-                                 path = if (!missing(path)) path,
+                                 path = if (!missing(path)) cpr(path),
                                  position = if (!missing(position)) position,
                                  width = if (!missing(width)) width,
                                  height = if (!missing(height)) height,
@@ -179,7 +194,7 @@ er_layer_image_overlay <- function(path, position, width, height, zoom_direction
 er_layer_title <- function(text, font_path, text_color, position, zoom_direction, zoom_amount) {
     do.call(er_layer, nnull(list(type = "title",
                                  text = if (!missing(text)) text,
-                                 font_path = if (!missing(font_path)) font_path,
+                                 font_path = if (!missing(font_path)) cpr(font_path),
                                  text_color = if (!missing(text_color)) text_color,
                                  position = if (!missing(position)) position,
                                  zoom_direction = if (!missing(zoom_direction)) zoom_direction,
@@ -191,7 +206,7 @@ er_layer_title <- function(text, font_path, text_color, position, zoom_direction
 er_layer_subtitle <- function(text, font_path, text_color) {
     do.call(er_layer, nnull(list(type = "subtitle",
                                  text = if (!missing(text)) text,
-                                 font_path = if (!missing(font_path)) font_path,
+                                 font_path = if (!missing(font_path)) cpr(font_path),
                                  text_color = if (!missing(text_color)) text_color)))
 }
 
@@ -200,7 +215,7 @@ er_layer_subtitle <- function(text, font_path, text_color) {
 er_layer_title_background <- function(text, font_path, text_color, background) {
     do.call(er_layer, nnull(list(type = "title-background",
                                  text = if (!missing(text)) text,
-                                 font_path = if (!missing(font_path)) font_path,
+                                 font_path = if (!missing(font_path)) cpr(font_path),
                                  text_color = if (!missing(text_color)) text_color,
                                  background = if (!missing(background)) background)))
 }
@@ -210,7 +225,7 @@ er_layer_title_background <- function(text, font_path, text_color, background) {
 er_layer_news_title <- function(text, font_path, text_color, background_color, position) {
     do.call(er_layer, nnull(list(type = "news-title",
                                  text = if (!missing(text)) text,
-                                 font_path = if (!missing(font_path)) font_path,
+                                 font_path = if (!missing(font_path)) cpr(font_path),
                                  text_color = if (!missing(text_color)) text_color,
                                  background_color = if (!missing(background_color)) background_color,
                                  position = if (!missing(position)) position)))
@@ -222,7 +237,7 @@ er_layer_news_title <- function(text, font_path, text_color, background_color, p
 er_layer_slide_in_text <- function(text, font_path, font_size, char_spacing, color, position) {
     do.call(er_layer, nnull(list(type = "slide-in-text",
                                  text = if (!missing(text)) text,
-                                 font_path = if (!missing(font_path)) font_path,
+                                 font_path = if (!missing(font_path)) cpr(font_path),
                                  font_size = if (!missing(font_size)) font_size,
                                  char_spacing = if (!missing(char_spacing)) char_spacing,
                                  color = if (!missing(color)) color,
@@ -260,7 +275,7 @@ er_layer_rainbow_colors <- function() {
 #' @export
 er_layer_video <- function(path, resize_mode, cut_from, cut_to, width, height, left, top, origin_x, origin_y, mix_volume) {
     do.call(er_layer, nnull(list(type = "video",
-                                 path = if (!missing(path)) path,
+                                 path = if (!missing(path)) cpr(path),
                                  resize_mode = if (!missing(resize_mode)) resize_mode,
                                  cut_from = if (!missing(cut_from)) cut_from,
                                  cut_to = if (!missing(cut_to)) cut_to,
@@ -277,7 +292,7 @@ er_layer_video <- function(path, resize_mode, cut_from, cut_to, width, height, l
 #' @export
 er_layer_audio <- function(path, cut_from, cut_to, mix_volume) {
     do.call(er_layer, nnull(list(type = "audio",
-                                 path = if (!missing(path)) path,
+                                 path = if (!missing(path)) cpr(path),
                                  cut_from = if (!missing(cut_from)) cut_from,
                                  cut_to = if (!missing(cut_to)) cut_to,
                                  mix_volume = if (!missing(mix_volume)) mix_volume)))
@@ -287,7 +302,7 @@ er_layer_audio <- function(path, cut_from, cut_to, mix_volume) {
 #' @export
 er_layer_detached_audio <- function(path, cut_from, cut_to, start, mix_volume) {
     do.call(er_layer, nnull(list(type = "detached-audio",
-                                 path = if (!missing(path)) path,
+                                 path = if (!missing(path)) cpr(path),
                                  cut_from = if (!missing(cut_from)) cut_from,
                                  cut_to = if (!missing(cut_to)) cut_to,
                                  start = if (!missing(start)) start,
@@ -330,6 +345,8 @@ er_cliplist <- c("er_layer_pause", "er_layer_title", "er_layer_title_background"
 #' * `transition` is optional and only added if it appears in the `...` parameters
 #' * `layer` is created via the `er_layer_*` function, passing the appropriate parameters from `...`
 #'
+#' `er_clip_title2` is the same as `er_clip_title` but automatically inserts an `er_layer_fill_color` layer underneath the title, to fix font rendering issues (see <https://github.com/mifi/editly/issues/84>)
+#'
 #' @references <https://github.com/mifi/editly/>
 #' @param duration numeric: duration in seconds
 #' @param ... : as for the corresponding `er_layer_*` function
@@ -360,9 +377,9 @@ rm(er_clip_constructor)
 
 #' @rdname er_clip_pause
 #' @export
-er_clip_pausetitle <- function(duration, ...) {
+er_clip_title2 <- function(duration, ...) {
     rgs <- list(...)
-    lyrs <- list(do.call(er_layer_pause, rgs[names(rgs) %in% "color"]),
+    lyrs <- list(do.call(er_layer_fill_color, rgs[names(rgs) %in% "color"]),
                  do.call(er_layer_title, rgs[names(rgs) %in% c("text", "font_path", "text_color", "position", "zoom_direction", "zoom_amount")]))
     er_clip(duration = duration, transition = rgs[["transition"]], layers = lyrs)
 }
