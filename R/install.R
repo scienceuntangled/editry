@@ -16,9 +16,9 @@ er_install_editly <- function() {
     if (!dir.exists(target_dir)) dir.create(target_dir, recursive = TRUE)
     setwd(target_dir)
     noder::nr_add_node_path()
-    ##sys::exec_wait("npm", c("i", "editly"))
+    ##sys::exec_wait(Sys.which("npm"), c("i", "editly"))
     ## install from github
-    sys::exec_wait("npm", c("i", "scienceuntangled/editly.git#logo"))
+    sys::exec_wait(Sys.which("npm"), c("i", "scienceuntangled/editly.git#logo"))
     chk <- er_editly_exe()
     if (!is.null(chk)) chk else stop("Sorry, editly install failed")
 }

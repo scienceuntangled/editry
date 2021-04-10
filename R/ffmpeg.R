@@ -112,6 +112,8 @@ er_ffmpeg_exe <- function() {
 #' @export
 er_add_ffmpeg_path <- function() {
     if (!nzchar(Sys.which("ffmpeg"))) {
+        ## not already on the system path
+        er_ffmpeg_ok(do_error = TRUE) ## check that we can find it
         ffmpeg_dir <- dirname(er_ffmpeg_exe())
         if (nzchar(ffmpeg_dir)) {
             psep <- if (get_os() == "windows") ";" else ":"
