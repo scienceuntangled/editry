@@ -42,14 +42,14 @@ er_install_editly()
 ```
 
 If you don’t have `ffmpeg` on your system, you will also need this. On
-Windows you can use:
+Windows or Linux you can use:
 
 ``` r
 er_install_ffmpeg()
 ```
 
-On other platforms (Linux, Mac) you will need to install `ffmpeg`
-yourself, e.g. using your package manager.
+On other platforms (e.g. Mac) you will need to install `ffmpeg`
+yourself.
 
 ## Example usage
 
