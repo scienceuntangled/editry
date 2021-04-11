@@ -4,10 +4,13 @@
 \alias{er_install_editly}
 \title{Install the editly node package}
 \usage{
-er_install_editly()
+er_install_editly(force = FALSE)
+}
+\arguments{
+\item{force}{logical: if \code{TRUE}, force reinstallation of editly if it is already installed}
 }
 \value{
-The path to the installation
+The path to the installation (invisibly)
 }
 \description{
 Install the editly node package
