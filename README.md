@@ -25,31 +25,19 @@ You can install from
 remotes::install_github("scienceuntangled/editry")
 ```
 
-Before `editry` can be used, you also need to install `node`, and the
-`editly` npm package. You only need to do these steps once.
-
-Install `node`:
-
-``` r
-noder::nr_install_node()
-```
-
-Then `editly`:
+Before `editry` can be used, you also need to install the `editly` npm
+package. You only need to do this once:
 
 ``` r
 library(editry)
 er_install_editly()
 ```
 
-If you don’t have `ffmpeg` on your system, you will also need this. On
-Windows or Linux you can use:
-
-``` r
-er_install_ffmpeg()
-```
-
-On other platforms (e.g. Mac) you will need to install `ffmpeg`
-yourself.
+This will automatically install the system binaries for `node` (via
+`noder::nr_install_node()`) and `ffmpeg` (via `er_install_ffmpeg()`) if
+not already present on your system. (The `ffmpeg` installer only works
+on Windows and Linux at this stage. On other platforms (e.g. Mac) you
+will currently need to install `ffmpeg` yourself.)
 
 ## Example usage
 
