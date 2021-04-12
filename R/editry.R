@@ -492,11 +492,11 @@ er_to_json <- function(spec) toJSON(spec, auto_unbox = TRUE)
 #' @export
 er_theme_default <- function() {
     theme_slide_colour <- "black"
-    theme_slide_colour <- "#333333"
     theme_text_colour <- "white"
     theme_gradient_colours <- c("#33333380", "#77777780")
     theme_gradient <- editry::er_layer_radial_gradient(colors = theme_gradient_colours)
     theme_bg_colour <- "#D02A42" ## background for news-title
+    theme_resize_mode <- "contain"
 
     er_defaults(
         transition = list(name = "fadecolor", duration = 0.5),
@@ -505,6 +505,7 @@ er_theme_default <- function() {
                      color = theme_slide_colour,
                      colors = theme_gradient_colours,
                      background = theme_gradient,
-                     backgroundColor = theme_bg_colour)
+                     backgroundColor = theme_bg_colour,
+                     resizeMode = theme_resize_mode)
     )
 }

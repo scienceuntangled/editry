@@ -49,9 +49,10 @@ Typically a spec consists of a sequence of clips, along with some header paramet
 
 ```{r}
 clips <- list(
-    er_clip_title2(duration = 3, text = "Title slide", transition = er_transition(name = "windowslice")),
-    er_clip_image(duration = 3, path = "https://jeroen.github.io/images/Rlogo.png",
-                  resize_mode = "contain", zoom_direction = "out"))
+    er_clip_title2(duration = 3, text = "Title slide",
+                   transition = er_transition(name = "windowslice")),
+    er_clip_image(duration = 3, zoom_direction = "out",
+                  path = "https://jeroen.github.io/images/Rlogo.png"))
 
 ```
 

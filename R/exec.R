@@ -10,7 +10,12 @@
 #'
 #' @examples
 #' \dontrun{
-#'   er_exec_wait()
+#'   clips <- list(er_clip_title2(duration = 3, text = "Title slide"),
+#'                 er_clip_image(duration = 3, path = "https://jeroen.github.io/images/Rlogo.png"))
+#'   outfile <- tempfile(fileext = ".mp4")
+#'   my_spec <- er_spec(clips = clips , out_path = outfile, allow_remote_requests = TRUE)
+#'   er_exec_wait(my_spec)
+#'   if (interactive()) browseURL(outfile)
 #' }
 #'
 #' @export
