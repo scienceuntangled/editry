@@ -4,14 +4,14 @@
 \alias{er_exec_wait}
 \title{Execute editly}
 \usage{
-er_exec_wait(json, fast = FALSE, ...)
+er_exec_wait(spec, fast = FALSE, ...)
 }
 \arguments{
-\item{json}{string: path to json file or json string, as returned by \code{\link[=er_spec]{er_spec()}}}
+\item{spec}{er_spec or string: \code{er_spec} object, or a string giving the path to a JSON file or a JSON string, as returned by \code{\link[=er_spec]{er_spec()}}}
 
 \item{fast}{logical: if \code{TRUE}, run editly in 'fast' (low quality/preview) mode}
 
-\item{...}{: if a json file is not being used, you can provide command line arguments as individual parameters}
+\item{...}{: if a JSON file is not being used, you can provide command line arguments as individual parameters}
 }
 \value{
 0 for success (invisibly)

@@ -18,3 +18,18 @@ get_os <- function() {
         stop("unknown operating system: ", os)
     os
 }
+
+nested_merge <- function(x, y) {
+    ## merge anything from y into x, if there isn't already such an element in x
+    ## recurse into list elements
+    listels <- intersect(names(x)[vapply(x, is.list, FUN.VALUE = TRUE)], names(y)[vapply(y, is.list, FUN.VALUE = TRUE)])
+    to_merge <- unique(c(setdiff(names(y), names(x)), listels))
+    for (m in to_merge) {
+        if (is.list(y[[m]])) {
+            x[[m]] <- nested_merge(x[[m]], y[[m]])
+        } else {
+            x[[m]] <- y[[m]]
+        }
+    }
+    x
+}

@@ -2,26 +2,39 @@
 % Please edit documentation in R/editry.R
 \name{er_spec}
 \alias{er_spec}
-\title{Create the json string ready for compiling to video by editly}
+\title{Create a spec ready for compiling to video}
 \usage{
-er_spec(header, clips, audio_tracks)
+er_spec(
+  header,
+  clips,
+  audio_tracks,
+  theme = "er_theme_default",
+  as = "object",
+  ...
+)
 }
 \arguments{
-\item{header}{er_header: as returned by \code{\link[=er_header]{er_header()}}, or a list containing the header, clips, and (optionally) audio tracks, equivalent to \code{list(header, clips = list(clips), audioTracks = list(audio_tracks))}}
+\item{header}{er_header: as returned by \code{\link[=er_header]{er_header()}}. Alternatively, do not specify the \code{header} argument but pass named header parameters separately}
 
 \item{clips}{list: a list of \code{er_clip} objects as returned by \code{\link[=er_clip]{er_clip()}}}
 
 \item{audio_tracks}{list: a list of \code{er_audio_track} objects, as returned by \code{\link[=er_audio_track]{er_audio_track()}}}
+
+\item{theme}{string: name of a theme function to apply, or \code{NULL} for no theme. The theme will set defaults, but will not override any defaults specified in the header}
+
+\item{as}{string: either "object" (return an object of class \code{er_spec}, suitable to pass to \code{\link[=er_to_json]{er_to_json()}}, or "json" (the JSON string as obtained from \code{\link[=er_to_json]{er_to_json()}})}
+
+\item{...}{: as for \code{er_header}}
 }
 \value{
-A json string
+A list of class \code{er_spec} or a JSON string
 }
 \description{
-Create the json string ready for compiling to video by editly
+Create a spec ready for compiling to video
 }
 \references{
 \url{https://github.com/mifi/editly/}
 }
 \seealso{
-\code{\link[=er_layer]{er_layer()}}, \code{\link[=er_exec_wait]{er_exec_wait()}}
+\code{\link[=er_layer]{er_layer()}}, \code{\link[=er_to_json]{er_to_json()}}, \code{\link[=er_exec_wait]{er_exec_wait()}}
 }

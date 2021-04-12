@@ -51,30 +51,25 @@ one or more layers. Let’s start with two simple clips:
 
 ``` r
 clips <- list(
-    er_clip_title2(duration = 3, text = "Title slide", color = "black", transition = er_transition(name = "windowslice")),
+    er_clip_title2(duration = 3, text = "Title slide", transition = er_transition(name = "windowslice")),
     er_clip_image(duration = 3, path = "https://jeroen.github.io/images/Rlogo.png",
                   resize_mode = "contain", zoom_direction = "out"))
 ```
 
-The header:
+Now we can create the spec that defines all the steps required to build
+the video:
 
 ``` r
 outfile <- tempfile(fileext = ".mp4")
-hdr <- er_header(out_path = outfile, allow_remote_requests = TRUE)
+my_spec <- er_spec(clips = clips , out_path = outfile, allow_remote_requests = TRUE)
 ## allow_remote_requests allows us to use a remote URL for image source, above
-```
-
-Now we can build the actual spec (which is a json string):
-
-``` r
-my_json <- er_spec(header = hdr, clips = clips)
 ```
 
 And compile this into a video. We use the `fast` option here to generate
 a low-quality preview:
 
 ``` r
-er_exec_wait(json = my_json, fast = TRUE)
+er_exec_wait(spec = my_spec, fast = TRUE)
 ```
 
 <img src="man/figures/example1.gif" />

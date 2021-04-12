@@ -408,19 +408,19 @@ er_transition <- function(name, duration, audio_out_curve, audio_in_curve) {
 }
 
 
-#' Create the json string ready for compiling to video by editly
-#'
-#' @references <https://github.com/mifi/editly/>
-#' @param header er_header: as returned by [er_header()], or a list containing the header, clips, and (optionally) audio tracks, equivalent to `list(header, clips = list(clips), audioTracks = list(audio_tracks))`
-#' @param clips list: a list of `er_clip` objects as returned by [er_clip()]
-#' @param audio_tracks list: a list of `er_audio_track` objects, as returned by [er_audio_track()]
-#'
-#' @return A json string
-#'
-#' @seealso [er_layer()], [er_exec_wait()]
-#'
-#' @export
-er_spec <- function(header, clips, audio_tracks) {
+# Create the JSON string ready for compiling to video by editly
+#
+# @references <https://github.com/mifi/editly/>
+# @param header er_header: as returned by [er_header()], or a list containing the header, clips, and (optionally) audio tracks, equivalent to `list(header, clips = list(clips), audioTracks = list(audio_tracks))`
+# @param clips list: a list of `er_clip` objects as returned by [er_clip()]
+# @param audio_tracks list: a list of `er_audio_track` objects, as returned by [er_audio_track()]
+#
+# @return A json string
+#
+# @seealso [er_layer()], [er_exec_wait()]
+#
+# @export
+er_spec_old <- function(header, clips, audio_tracks) {
     if (is.list(header) && "clips" %in% names(header)) {
         json <- header
     } else {
@@ -428,4 +428,83 @@ er_spec <- function(header, clips, audio_tracks) {
         if (!missing(audio_tracks) && !is.null(audio_tracks)) json$audioTracks <- list(audio_tracks)
     }
     toJSON(json, auto_unbox = TRUE)
+}
+
+#' Create a spec ready for compiling to video
+#'
+#' @references <https://github.com/mifi/editly/>
+#' @param header er_header: as returned by [er_header()]. Alternatively, do not specify the `header` argument but pass named header parameters separately
+#' @param clips list: a list of `er_clip` objects as returned by [er_clip()]
+#' @param audio_tracks list: a list of `er_audio_track` objects, as returned by [er_audio_track()]
+#' @param theme string: name of a theme function to apply, or `NULL` for no theme. The theme will set defaults, but will not override any defaults specified in the header
+#' @param as string: either "object" (return an object of class `er_spec`, suitable to pass to [er_to_json()], or "json" (the JSON string as obtained from [er_to_json()])
+#' @param ... : as for `er_header`
+#'
+#' @return A list of class `er_spec` or a JSON string
+#'
+#' @seealso [er_layer()], [er_to_json()], [er_exec_wait()]
+#'
+#' @export
+er_spec <- function(header, clips, audio_tracks, theme = "er_theme_default", as = "object", ...) {
+    assert_that(is.string(as))
+    as <- tolower(as)
+    as <- match.arg(as, c("object", "json"))
+    spec <- list()
+    rgs <- list(...)
+    if (missing(header) || length(header) < 1) {
+        ## from dots
+        h_args <- rgs[names(rgs) %in% formalArgs(er_header)]
+        if (!"out_path" %in% names(h_args)) h_args$out_path <- tempfile(fileext = ".mp4")
+        header <- do.call(er_header, h_args)
+    }
+    assert_that(inherits(header, "er_header"))
+
+    ## apply theme to defaults
+    if (!is.null(theme)) {
+        if (is.string(theme)) theme <- match.fun(theme)
+        assert_that(is.function(theme))
+        header$defaults <- nested_merge(header$defaults, theme())
+    }
+
+    out <- c(header, clips = list(clips))
+    if (!missing(audio_tracks) && !is.null(audio_tracks)) out$audioTracks <- list(audio_tracks)
+    out <- structure(out, class = c("er_spec", "list"))
+    if (as == "json") er_to_json(out) else out
+}
+
+#' Convert editly spec to JSON string
+#'
+#' @param spec string: a JSON string as returned by [er_spec()]
+#'
+#' @return A JSON string
+#'
+#' @export
+
+er_to_json <- function(spec) toJSON(spec, auto_unbox = TRUE)
+
+
+#' Editry themes
+#'
+#' @return An object of class `er_defaults`
+#'
+#' @seealso [er_defaults()], [er_spec()]
+#'
+#' @export
+er_theme_default <- function() {
+    theme_slide_colour <- "black"
+    theme_slide_colour <- "#333333"
+    theme_text_colour <- "white"
+    theme_gradient_colours <- c("#33333380", "#77777780")
+    theme_gradient <- editry::er_layer_radial_gradient(colors = theme_gradient_colours)
+    theme_bg_colour <- "#D02A42" ## background for news-title
+
+    er_defaults(
+        transition = list(name = "fadecolor", duration = 0.5),
+        layer = list(fontPath = system.file("extdata/fonts/PatuaOne-Regular.ttf", package = "editry"),
+                     textColor = theme_text_colour,
+                     color = theme_slide_colour,
+                     colors = theme_gradient_colours,
+                     background = theme_gradient,
+                     backgroundColor = theme_bg_colour)
+    )
 }
