@@ -41,7 +41,7 @@ do_install_editry <- function(force) {
     noder::nr_add_node_path()
     ##sys::exec_wait(Sys.which("npm"), c("i", "editly"))
     ## install from github
-    message("installing to ", target_dir)
+    message("installing editly to ", target_dir)
     res <- sys::exec_internal(Sys.which("npm"), c("i", "scienceuntangled/editly.git#logo"), error = FALSE)
     if (res$status > 0) {
         stop(rawToChar(res$stderr))

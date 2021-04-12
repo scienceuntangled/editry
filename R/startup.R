@@ -9,13 +9,12 @@
             if (get_os() %in% c("osx", "linux") && !requireNamespace("archive", quietly = TRUE)) {
                 msg <- c(msg, "the 'archive' package is required to install node: first install 'archive' with")
                 if (!requireNamespace("remotes", quietly = TRUE)) msg <- c(msg, "  install.packages(\"remotes\")")
-                msg <- c(msg, "  remotes::install_github(\"jimhester/archive\")", "then")
+                msg <- c(msg, "  remotes::install_github(\"jimhester/archive\")", "then run:")
             }
-            msg <- c(msg, "Install node with:", "  nr_install_node()")
+        } else {
+            msg <- c(msg, "Run:")
         }
-        if (!editly_installed) {
-            msg <- c(msg, "Install editly with:", "  er_install_editly()")
-        }
+        msg <- c(msg, "  er_install_editly()")
         packageStartupMessage(paste(msg, collapse = "\n"))
     }
 }
