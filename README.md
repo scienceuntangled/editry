@@ -74,3 +74,28 @@ er_exec_wait(spec = my_spec, fast = TRUE)
 ```
 
 <img src="man/figures/example1.gif" />
+
+## Example 2
+
+A clip from a video, with a bit of decoration added.
+
+``` r
+my_video <- "https://github.com/openvolley/ovdata/raw/master/inst/extdata/video/2019_03_01-KATS-BEDS-clip.mp4"
+my_logo <- "https://github.com/openvolley/community/raw/master/docs/talks/common/ovlogo-blur.png"
+
+clips <- list(
+    ## blank intro
+    er_clip_pause(duration = 0.25),
+    ## the video segment
+    er_clip_video(path = my_video, cut_from = 1, cut_to = 8),
+    ## add an outro banner with logo
+    er_clip(duration = 1.5, layers = list(er_layer_fill_color(),
+                                          er_layer_image(path = my_logo))),
+    ##  and a blank finishing screen
+    er_clip_pause(duration = 0.25))
+
+outfile <- tempfile(fileext = ".mp4")
+my_spec <- er_spec(clips = clips, out_path = outfile, allow_remote_requests = TRUE)
+```
+
+<img src="man/figures/example2.gif" />
