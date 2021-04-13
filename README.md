@@ -84,8 +84,6 @@ my_video <- "https://github.com/openvolley/ovdata/raw/master/inst/extdata/video/
 my_logo <- "https://github.com/openvolley/community/raw/master/docs/talks/common/ovlogo-blur.png"
 
 clips <- list(
-    ## blank intro
-    er_clip_pause(duration = 0.25),
     ## the video segment
     er_clip_video(path = my_video, cut_from = 1, cut_to = 8),
     ## add an outro banner with logo
