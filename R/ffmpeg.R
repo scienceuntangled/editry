@@ -44,16 +44,17 @@ er_install_ffmpeg <- function(force = FALSE, bits, check_hash = TRUE) {
 
     if (my_os == "windows") {
         ## e.g. https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2021-04-09-12-38/ffmpeg-N-101901-gb593abda6c-win64-gpl.zip
-        pg <- readLines("https://github.com/BtbN/FFmpeg-Builds/releases/latest")
-        pg <- pg[grep("\\/ffmpeg\\-N.+\\-win64\\-gpl.zip\"", pg)]
-        rgxp <- paste0("href[[:space:]]*=[[:space:]]*\"(.+?)\"")
-        dl_url <- pg[grep(rgxp, pg, ignore.case = TRUE)]
-        dl_url <- regmatches(dl_url, regexpr(rgxp, dl_url, ignore.case = TRUE))
-        if (length(dl_url) == 1) {
-            dl_url <- paste0("https://github.com", gsub("\"", "", sub("href[[:space:]]*=[[:space:]]*\"", "", dl_url)))
-        } else {
-            stop("could not find download URL on https://github.com/BtbN/FFmpeg-Builds/releases/latest")
-        }
+        ##pg <- readLines("https://github.com/BtbN/FFmpeg-Builds/releases/latest")
+        ##pg <- pg[grep("\\/ffmpeg\\-N.+\\-win64\\-gpl.zip\"", pg)]
+        ##rgxp <- paste0("href[[:space:]]*=[[:space:]]*\"(.+?)\"")
+        ##dl_url <- pg[grep(rgxp, pg, ignore.case = TRUE)]
+        ##dl_url <- regmatches(dl_url, regexpr(rgxp, dl_url, ignore.case = TRUE))
+        ##if (length(dl_url) == 1) {
+        ##    dl_url <- paste0("https://github.com", gsub("\"", "", sub("href[[:space:]]*=[[:space:]]*\"", "", dl_url)))
+        ##} else {
+        ##    stop("could not find download URL on https://github.com/BtbN/FFmpeg-Builds/releases/latest")
+        ##}
+        dl_url <- "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip"
         hash_url <- NULL
         ## alternative, requires archive to extract 7z
         ##dl_url <- "https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-essentials.7z"
