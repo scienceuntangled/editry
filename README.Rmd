@@ -48,10 +48,11 @@ This will automatically install the system binaries for `node` (via `noder::nr_i
 Alternatively, install docker and pull an appropriate image, for example:
 
 ```{sh eval = FALSE}
-docker pull vimagick/editly
+docker pull scienceuntangled/editly
 
 ```
 
+(The `scienceuntangled/editly` docker image uses a modified version of `editly`. Other `editly` docker images can be used, but will not support the `logo_*` parameters in `er_header` or `er_spec`.)
 
 ## Example usage
 

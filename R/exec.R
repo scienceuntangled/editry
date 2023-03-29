@@ -46,7 +46,7 @@ er_exec_wait <- function(spec, fast = FALSE, ...) {
 
 #' Execute editly in docker image
 #'
-#' Does not require node or editly to be installed on your system, instead requires that Docker is running and that you have pulled a suitable editly docker image. By default this should be `vimagick/editly`
+#' Does not require node or editly to be installed on your system, instead requires that Docker is running and that you have pulled a suitable editly docker image. By default this is `scienceuntangled/editly`, which uses a modified version of `editly`. Other `editly` docker images can be used, but will not support the `logo_*` parameters in `er_header` or `er_spec`.
 #'
 #' @references <https://github.com/mifi/editly/>
 #'
@@ -67,14 +67,14 @@ er_exec_wait <- function(spec, fast = FALSE, ...) {
 #' }
 #'
 #' @export
-er_exec_docker <- function(spec, docker_image = "vimagick/editly", fast = FALSE) {
+er_exec_docker <- function(spec, docker_image = "scienceuntangled/editly", fast = FALSE) {
     v <- system.file("extdata", package = "editry")
     assert_that(inherits(spec, "er_spec"), msg = "spec should be an er_spec object")
     ## find paths to map to docker
     temp <- unlist(spec)
     for (i in seq_along(temp)) {
         this <- strsplit(names(temp)[i], "\\.")[[1]]
-        if (any(this %in% c("path", "fontPath", "outPath")) && !grepl("^https?:", temp[i], ignore.case = TRUE)) v <- c(v, dirname(temp[i]))
+        if (any(this %in% c("path", "audioFilePath", "fontPath", "logoPath", "outPath")) && !grepl("^https?:", temp[i], ignore.case = TRUE)) v <- c(v, dirname(temp[i]))
     }
     jsonfile <- tempfile(fileext = ".json5")
     v <- c(v, dirname(jsonfile))

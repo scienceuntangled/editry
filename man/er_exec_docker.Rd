@@ -4,7 +4,7 @@
 \alias{er_exec_docker}
 \title{Execute editly in docker image}
 \usage{
-er_exec_docker(spec, docker_image = "vimagick/editly", fast = FALSE)
+er_exec_docker(spec, docker_image = "scienceuntangled/editly", fast = FALSE)
 }
 \arguments{
 \item{spec}{er_spec: an \code{er_spec} object as returned by \code{\link[=er_spec]{er_spec()}}}
@@ -17,7 +17,7 @@ er_exec_docker(spec, docker_image = "vimagick/editly", fast = FALSE)
 0 for success (invisibly)
 }
 \description{
-Does not require node or editly to be installed on your system, instead requires that Docker is running and that you have pulled a suitable editly docker image. By default this should be \code{vimagick/editly}
+Does not require node or editly to be installed on your system, instead requires that Docker is running and that you have pulled a suitable editly docker image. By default this is \code{scienceuntangled/editly}, which uses a modified version of \code{editly}. Other \code{editly} docker images can be used, but will not support the \verb{logo_*} parameters in \code{er_header} or \code{er_spec}.
 }
 \examples{
 \dontrun{

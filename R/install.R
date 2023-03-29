@@ -39,7 +39,6 @@ do_install_editry <- function(force) {
     if (!dir.exists(target_dir)) dir.create(target_dir, recursive = TRUE)
     setwd(target_dir)
     noder::nr_add_node_path()
-    ##sys::exec_wait(Sys.which("npm"), c("i", "editly"))
     ## install from github
     message("installing editly to ", target_dir)
     res <- sys::exec_internal(Sys.which("npm"), c("i", "scienceuntangled/editly.git#logo"), error = FALSE)

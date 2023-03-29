@@ -47,8 +47,12 @@ Alternatively, install docker and pull an appropriate image, for
 example:
 
 ``` sh
-docker pull vimagick/editly
+docker pull scienceuntangled/editly
 ```
+
+(The `scienceuntangled/editly` docker image uses a modified version of
+`editly`. Other `editly` docker images can be used, but will not support
+the `logo_*` parameters in `er_header` or `er_spec`.)
 
 ## Example usage
 
