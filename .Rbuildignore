@@ -4,3 +4,4 @@
 ^README\.html$
 docs/
 inst/node/node_modules/
+local-tests/
