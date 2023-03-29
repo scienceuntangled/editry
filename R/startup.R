@@ -2,7 +2,7 @@
     ## some checks
     if (!nzchar(Sys.which("docker"))) {
         ## if docker exists, could be using editly via that, so don't warn
-        node_installed <- !is.null(nr_node_exe())
+        node_installed <- requireNamespace("noder", quietly = TRUE) && !is.null(noder::nr_node_exe())
         editly_installed <- !is.null(er_editly_exe())
         needs_install <- c(if (!node_installed) "node", if (!editly_installed) "editly")
         if (length(needs_install) > 0) {

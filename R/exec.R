@@ -20,6 +20,7 @@
 #'
 #' @export
 er_exec_wait <- function(spec, fast = FALSE, ...) {
+    if (!requireNamespace("noder", quietly = TRUE)) stop("the noder package is required, install with `er_install_editly()`")
     er_add_ffmpeg_path() ## needed, because editly needs to find ffprobe and ffmpeg. Also checks that ffmpeg can be found (is installed)
     cli <- er_editly_exe()
     if (is.null(cli)) stop("could not find the editly executable: have you installed it with `er_install_editly()` ?")

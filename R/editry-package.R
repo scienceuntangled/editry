@@ -7,5 +7,4 @@
 #' @importFrom assertthat assert_that is.flag is.string
 #' @importFrom jsonlite toJSON unbox
 #' @importFrom methods formalArgs
-#' @importFrom noder nr_node_exe
 NULL
