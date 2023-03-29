@@ -400,7 +400,8 @@ er_clip_title2 <- function(duration, ...) {
 #'
 #' @export
 er_transition <- function(name, duration, audio_out_curve, audio_in_curve) {
-    out <- list(name = name)
+    out <- list()
+    out <- cadd(out, name)
     out <- cadd(out, duration)
     out <- cadd(out, audio_out_curve)
     out <- cadd(out, audio_in_curve)
