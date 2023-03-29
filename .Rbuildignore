@@ -5,3 +5,4 @@
 docs/
 inst/node/node_modules/
 local-tests/
+^\.github$

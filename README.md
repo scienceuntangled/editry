@@ -6,6 +6,7 @@
 <!-- badges: start -->
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![R-CMD-check](https://github.com/scienceuntangled/editry/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/scienceuntangled/editry/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 `editry` provides R bindings to
