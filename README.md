@@ -25,8 +25,11 @@ You can install from
 remotes::install_github("scienceuntangled/editry")
 ```
 
-Before `editry` can be used, you also need to install the `editly` npm
-package. You only need to do this once:
+Before `editry` can be used, you either need to install the `editly` npm
+package, or to have docker running on your system with an `editly`
+docker image pulled. You only need to do this once.
+
+To install `editly` npm:
 
 ``` r
 library(editry)
@@ -38,6 +41,13 @@ This will automatically install the system binaries for `node` (via
 not already present on your system. (The `ffmpeg` installer only works
 on Windows and Linux at this stage. On other platforms (e.g. Mac) you
 will currently need to install `ffmpeg` yourself.)
+
+Alternatively, install docker and pull an appropriate image, for
+example:
+
+``` sh
+docker pull vimagick/editly
+```
 
 ## Example usage
 
@@ -72,6 +82,9 @@ a low-quality preview:
 ``` r
 er_exec_wait(spec = my_spec, fast = TRUE)
 ```
+
+Note: if you are using `editly` via docker, use `er_exec_docker` instead
+of `er_exec_wait`.
 
 <img src="man/figures/example1.gif" />
 
