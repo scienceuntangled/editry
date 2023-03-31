@@ -18,10 +18,11 @@ music overlaid.”
 
 ## Installation
 
-You can install from
-[GitHub](https://github.com/scienceuntangled/editry) with:
-
 ``` r
+install.packages("editry", repos = c("https://openvolley.r-universe.dev",
+                                     "https://cloud.r-project.org"))
+## or
+
 ## install.packages("remotes") ## if needed
 remotes::install_github("scienceuntangled/editry")
 ```
@@ -77,8 +78,9 @@ the video:
 
 ``` r
 outfile <- tempfile(fileext = ".mp4")
-my_spec <- er_spec(clips = clips , out_path = outfile, allow_remote_requests = TRUE)
-## allow_remote_requests allows us to use a remote URL for image source, above
+my_spec <- er_spec(clips = clips , out_path = outfile,
+                   allow_remote_requests = TRUE)
+## allow_remote_requests allows us to use a remote URL for the image source
 ```
 
 And compile this into a video. We use the `fast` option here to generate
@@ -111,7 +113,8 @@ clips <- list(
     er_clip_pause(duration = 0.25))
 
 outfile <- tempfile(fileext = ".mp4")
-my_spec <- er_spec(clips = clips, out_path = outfile, allow_remote_requests = TRUE)
+my_spec <- er_spec(clips = clips, out_path = outfile,
+                   allow_remote_requests = TRUE)
 ```
 
 <img src="man/figures/example2.gif" />
