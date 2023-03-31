@@ -1,6 +1,8 @@
 #' Install the editly node package
 #'
-#' @references <https://github.com/mifi/editly/>
+#' Editry requires that `editly` (the underlying nodeJS package) be available on your system, along with `node` and `ffmpeg`. These can either be installed directly on your system, or in a docker image. `er_install_editly` will attempt to install `node`, `ffmpeg`, and `editly` directly on your system. See the package overview at <https://scienceuntangled.github.io/editry> for docker-based installation.
+#'
+#' @references <https://github.com/scienceuntangled/editly/>
 #'
 #' @param force logical: if `TRUE`, force reinstallation of editly if it is already installed
 #' @param dependencies logical: if `TRUE`, the system binaries `node` (via [noder::nr_install_node()]) and `ffmpeg` (via [er_install_ffmpeg()]) will also be installed if not found on your system

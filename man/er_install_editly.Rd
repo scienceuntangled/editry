@@ -15,8 +15,8 @@ er_install_editly(force = FALSE, dependencies = TRUE)
 The path to the installation (invisibly)
 }
 \description{
-Install the editly node package
+Editry requires that \code{editly} (the underlying nodeJS package) be available on your system, along with \code{node} and \code{ffmpeg}. These can either be installed directly on your system, or in a docker image. \code{er_install_editly} will attempt to install \code{node}, \code{ffmpeg}, and \code{editly} directly on your system. See the package overview at \url{https://scienceuntangled.github.io/editry} for docker-based installation.
 }
 \references{
-\url{https://github.com/mifi/editly/}
+\url{https://github.com/scienceuntangled/editly/}
 }
