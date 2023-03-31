@@ -53,6 +53,7 @@ er_exec_wait <- function(spec, fast = FALSE, ...) {
 #' @param spec er_spec: an `er_spec` object as returned by [er_spec()]
 #' @param docker_image string: name of the docker image to use
 #' @param fast logical: if `TRUE`, run editly in 'fast' (low quality/preview) mode
+#' @param extra_docker_args character: additional arguments to pass to the `docker` command, e.g. `extra_docker_args = c("--cpu-shares", "512")` will limit the docker containiner's CPU priority when CPU cycles are limited (see <https://docs.docker.com/config/containers/resource_constraints/>)
 #'
 #' @return 0 for success (invisibly)
 #'
@@ -67,7 +68,7 @@ er_exec_wait <- function(spec, fast = FALSE, ...) {
 #' }
 #'
 #' @export
-er_exec_docker <- function(spec, docker_image = "scienceuntangled/editly", fast = FALSE) {
+er_exec_docker <- function(spec, docker_image = "scienceuntangled/editly", fast = FALSE, extra_docker_args) {
     v <- system.file("extdata", package = "editry")
     assert_that(inherits(spec, "er_spec"), msg = "spec should be an er_spec object")
     ## find paths to map to docker
@@ -82,7 +83,7 @@ er_exec_docker <- function(spec, docker_image = "scienceuntangled/editly", fast 
     fargs <- c("--json", jsonfile)
     ## TODO consolidate v to a reduced set of (higher) common paths?
     v2 <- vapply(unique(v), function(thisv) c("-v", paste0(thisv, ":", thisv)), FUN.VALUE = character(2), USE.NAMES = FALSE)
-    fargs <- c("run", "--rm", v2, docker_image, "editly", if (isTRUE(fast)) "--fast", fargs)
+    fargs <- c("run", "--rm", if (!missing(extra_docker_args) && length(extra_docker_args) > 0) extra_docker_args, v2, docker_image, "editly", if (isTRUE(fast)) "--fast", fargs)
     ## also pass user and id? would only work on unix-alikes? docker run --rm -u $(id -u):$(id -g) ...
     ##print(fargs)
     invisible(sys::exec_wait(cmd = "docker", fargs))

@@ -4,7 +4,12 @@
 \alias{er_exec_docker}
 \title{Execute editly in docker image}
 \usage{
-er_exec_docker(spec, docker_image = "scienceuntangled/editly", fast = FALSE)
+er_exec_docker(
+  spec,
+  docker_image = "scienceuntangled/editly",
+  fast = FALSE,
+  extra_docker_args
+)
 }
 \arguments{
 \item{spec}{er_spec: an \code{er_spec} object as returned by \code{\link[=er_spec]{er_spec()}}}
@@ -12,6 +17,8 @@ er_exec_docker(spec, docker_image = "scienceuntangled/editly", fast = FALSE)
 \item{docker_image}{string: name of the docker image to use}
 
 \item{fast}{logical: if \code{TRUE}, run editly in 'fast' (low quality/preview) mode}
+
+\item{extra_docker_args}{character: additional arguments to pass to the \code{docker} command, e.g. \code{extra_docker_args = c("--cpu-shares", "512")} will limit the docker containiner's CPU priority when CPU cycles are limited (see \url{https://docs.docker.com/config/containers/resource_constraints/})}
 }
 \value{
 0 for success (invisibly)
