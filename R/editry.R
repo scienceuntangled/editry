@@ -222,10 +222,11 @@ er_layer_title_background <- function(text, font_path, text_color, background) {
 
 #' @rdname er_layer_pause
 #' @export
-er_layer_news_title <- function(text, font_path, text_color, background_color, position) {
+er_layer_news_title <- function(text, font_path, font_size, text_color, background_color, position) {
     do.call(er_layer, nnull(list(type = "news-title",
                                  text = if (!missing(text)) text,
                                  font_path = if (!missing(font_path)) cpr(font_path),
+                                 font_size = if (!missing(font_size)) font_size,
                                  text_color = if (!missing(text_color)) text_color,
                                  background_color = if (!missing(background_color)) background_color,
                                  position = if (!missing(position)) position)))

@@ -44,7 +44,14 @@ er_layer_subtitle(text, font_path, text_color)
 
 er_layer_title_background(text, font_path, text_color, background)
 
-er_layer_news_title(text, font_path, text_color, background_color, position)
+er_layer_news_title(
+  text,
+  font_path,
+  font_size,
+  text_color,
+  background_color,
+  position
+)
 
 er_layer_slide_in_text(
   text,
@@ -106,9 +113,9 @@ er_layer_detached_audio(path, cut_from, cut_to, start, mix_volume)
 
 \item{background}{er_layer: as returned by \code{\link[=er_layer_radial_gradient]{er_layer_radial_gradient()}}, \code{\link[=er_layer_linear_gradient]{er_layer_linear_gradient()}}, or \code{\link[=er_layer_fill_color]{er_layer_fill_color()}}}
 
-\item{background_color}{string: background color}
-
 \item{font_size}{numeric: font size}
+
+\item{background_color}{string: background color}
 
 \item{char_spacing}{numeric: character spacing}
 
