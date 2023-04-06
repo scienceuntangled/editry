@@ -5,7 +5,6 @@
 FROM node:lts-bullseye
 MAINTAINER Science Untangled
 
-ARG EDITLY_VERSION=0.14.2
 ARG FFMPEG_VERSION=5.1.1
 
 RUN set -xe \
@@ -16,6 +15,8 @@ RUN set -xe \
  && ffmpeg -version \
  && ffprobe -version \
  && rm -rf /var/lib/apt/lists/*
+
+ADD https://api.github.com/repos/scienceuntangled/editly/git/refs/heads/logo editly_version.json
 
 RUN set -xe \
  && apt update \
