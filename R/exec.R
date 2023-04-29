@@ -84,7 +84,13 @@ er_exec_docker <- function(spec, docker_image = "scienceuntangled/editly", fast 
     ## TODO consolidate v to a reduced set of (higher) common paths?
     v2 <- vapply(unique(v), function(thisv) c("-v", paste0(thisv, ":", thisv)), FUN.VALUE = character(2), USE.NAMES = FALSE)
     fargs <- c("run", "--rm", if (!missing(extra_docker_args) && length(extra_docker_args) > 0) extra_docker_args, v2, docker_image, "editly", if (isTRUE(fast)) "--fast", fargs)
-    ## also pass user and id? would only work on unix-alikes? docker run --rm -u $(id -u):$(id -g) ...
-    ##print(fargs)
-    invisible(sys::exec_wait(cmd = "docker", fargs))
+    errfile <- tempfile()
+    out <- sys::exec_wait(cmd = "docker", fargs, std_err = errfile)
+    if (out != 0) {
+        errmsg <- readLines(errfile)
+        unlink(errfile)
+        stop(paste(errmsg, collapse = " "))
+    } else {
+        invisible(out)
+    }
 }
